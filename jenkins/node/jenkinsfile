@@ -3,8 +3,12 @@ pipeline {
     // agent node
     agent { 
         node {
-            label 'node-2'
+            label 'docker'
             }
+    }
+
+    tools {
+        NodeJS
     }
 
     environment {
@@ -18,7 +22,6 @@ pipeline {
                 echo "Changing Directory.."
                 sh '''
                     cd jenkins/node
-                    pwd
                 '''
             }
             
@@ -28,7 +31,6 @@ pipeline {
             steps {
                 echo "Building app  version ${CURRENT_VERSION}"
                 sh '''
-                    pwd
                     cd jenkins/node 
                     npm install 
                 '''
