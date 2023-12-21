@@ -1,20 +1,53 @@
 pipeline {
 
-    // agent node
+    //--------------------------------------------------------------------------------------------
+    //
+    // Define the agent
+    //
+    //--------------------------------------------------------------------------------------------
     agent { 
         node {
             label 'node-2'
             }
     }
 
+
+    //--------------------------------------------------------------------------------------------
+    //
+    // nodejs ==>  custom name for the Node 21.5.0 tool in your Jenkins Pipeline script 
+    // Node 21.5.0 ==> is the name of the Node.js installation configured in Jenkins
+    //
+    //--------------------------------------------------------------------------------------------
     tools {
          nodejs "Node 21.5.0"
     }
 
+    //--------------------------------------------------------------------------------------------
+    //
+    // Define environment
+    //
+    //--------------------------------------------------------------------------------------------
     environment {
         CURRENT_VERSION = "1.0.0"
     }
    
+
+    //--------------------------------------------------------------------------------------------
+    //
+    // Define parameters
+    //
+    //--------------------------------------------------------------------------------------------
+    parameters {
+        choice choices: ['dev', 'somke' ,'production'] , name: 'deployEnv', description: 'This is the deployment environment'
+    }
+
+
+
+    //--------------------------------------------------------------------------------------------
+    //
+    // Define stages
+    //
+    //--------------------------------------------------------------------------------------------
     stages {
 
         stage('Change Directory') {
@@ -40,7 +73,7 @@ pipeline {
         stage('Run') {
             when {
                 expression {
-                    env.BRANCH_NAME == "Master"
+                    params.BRANCH_NAME == "Master"
                 }
             }
             steps {
@@ -55,6 +88,22 @@ pipeline {
         }
 
 
+        stage ("Deploy") {
+            script {
+                def currentDeployEnv = params.deployEnv
+
+                if(currentDeployEnv == "dev"){
+                    echo "Deploying dev environment"
+                }
+                else if (currentDeployEnv == "somke"){
+                    echo "Deploying somke environment"
+                }
+                else{
+                    echo "Deploying production environment"
+                }
+            }
+        }
+
         stage('Cleanup Workspace') {
             steps {
                 deleteDir()
@@ -63,8 +112,6 @@ pipeline {
 
     }
 
-
-    // post
     post {
 
         always {
