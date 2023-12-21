@@ -20,6 +20,7 @@ pipeline {
     //--------------------------------------------------------------------------------------------
     tools {
          nodejs "Node 21.5.0"
+         docker "Docker"
     }
 
     //--------------------------------------------------------------------------------------------
@@ -122,7 +123,6 @@ pipeline {
         }
 
         stage ("Take Input") {
-
             when {
                 expression{
                     params.use_input == true
@@ -131,11 +131,13 @@ pipeline {
             input {
                 message "Try this input before deploy"
                 ok "Thanks"
-                parameters choice (
-                    choices: ['1','2','3'],
-                    name: "version",
-                    description: "This Input for demo"
-                )
+                parameters {
+                        choice (
+                        choices: ['1','2','3'],
+                        name: "version",
+                        description: "This Input for demo"
+                    )
+                }
             }
 
             steps {
@@ -162,6 +164,17 @@ pipeline {
                 }
             }
            
+        }
+
+        stage ("Push to docker hub"){
+            withCredentials([usernamePassword(credentialsId: 'Dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                
+                sh 'docker build -t ahmedmohamed1993/node-web-app:v3'
+                
+                sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin '
+               
+                sh "docker push ahmedmohamed1993/node-web-app:v3"
+            }
         }
 
         stage('Cleanup Workspace') {
