@@ -3,7 +3,7 @@ pipeline {
     // agent node
     agent { 
         node {
-            label 'docker'
+            label 'node-2'
             }
     }
 
