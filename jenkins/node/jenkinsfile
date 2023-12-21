@@ -1,0 +1,53 @@
+pipeline {
+
+    // agent node
+    // agent { 
+    //     node {
+    //         label 'node-2'
+    //         }
+    //   }
+
+    agent any
+   
+        // build stage 
+        stages {
+            stage('Build') {
+                steps {
+                    echo "Building.."
+                    sh '''
+                        npm install 
+                    '''
+                }
+        }
+
+        // run stage
+        // stage('Run') {
+        //     steps {
+        //         echo "Run.."
+        //         sh 'node app.js & sleep 1'
+        //         sh 'echo $! > .pidfile'
+        //         sh 'kill $(cat .pidfile)'
+        //     }
+        // }
+
+
+         // run stage
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ahmedmohamed1993/node-web-app:3 . '
+            }
+        }
+    }
+
+
+    // post
+    post {
+        success {
+            echo 'Build successful!'
+        }
+    
+        failure {
+            echo 'Build failed. Please check the logs for details.'
+        }
+    }
+}
