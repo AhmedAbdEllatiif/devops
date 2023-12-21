@@ -70,9 +70,8 @@ pipeline {
                 }
             }
             steps {
-                sh ''' cd jenkins/node '''
                 script {
-                    welcome = load "welcomescript.groovy"
+                    welcome = load "jenkins/node/welcomescript.groovy"
                     welcome.sayWelcome()
                 }
             }
