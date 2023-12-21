@@ -30,7 +30,7 @@ pipeline {
                     echo "Building.."
                     sh '''
                         pwd
-                         cd jenkins/node 
+                        cd jenkins/node 
                         npm install 
                     '''
                 }
@@ -40,9 +40,12 @@ pipeline {
             stage('Run') {
                 steps {
                     echo "Run.."
-                    sh 'node app.js & sleep 1'
-                    sh 'echo $! > .pidfile'
-                    sh 'kill $(cat .pidfile)'
+                    sh '''
+                        cd jenkins/node 
+                        node app.js & sleep 1
+                        echo $! > .pidfile
+                        kill $(cat .pidfile)
+                    '''
                 }
             }
 
