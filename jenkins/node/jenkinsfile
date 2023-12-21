@@ -1,11 +1,11 @@
 pipeline {
 
-    // agent node
-    // agent { 
-    //     node {
-    //         label 'node-2'
-    //         }
-    //   }
+    agent node
+    agent { 
+        node {
+            label 'node-2'
+            }
+      }
 
     agent any
    
@@ -21,22 +21,15 @@ pipeline {
         }
 
         // run stage
-        // stage('Run') {
-        //     steps {
-        //         echo "Run.."
-        //         sh 'node app.js & sleep 1'
-        //         sh 'echo $! > .pidfile'
-        //         sh 'kill $(cat .pidfile)'
-        //     }
-        // }
-
-
-         // run stage
-        stage('Build Docker Image') {
+        stage('Run') {
             steps {
-                sh 'docker build -t ahmedmohamed1993/node-web-app:3 . '
+                echo "Run.."
+                sh 'node app.js & sleep 1'
+                sh 'echo $! > .pidfile'
+                sh 'kill $(cat .pidfile)'
             }
         }
+
     }
 
 
