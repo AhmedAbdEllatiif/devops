@@ -28,6 +28,14 @@ pipeline {
             }
         }
 
+         // Delete the workspace from the previous build
+        stage('Cleanup Workspace') {
+            steps {
+               
+                deleteDir()
+            }
+        }
+
     }
 
 
