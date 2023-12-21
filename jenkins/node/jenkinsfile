@@ -89,19 +89,22 @@ pipeline {
 
 
         stage ("Deploy") {
-            script {
-                def currentDeployEnv = params.deployEnv
+            steps {
+                script {
+                    def currentDeployEnv = params.deployEnv
 
-                if(currentDeployEnv == "dev"){
-                    echo "Deploying dev environment"
-                }
-                else if (currentDeployEnv == "somke"){
-                    echo "Deploying somke environment"
-                }
-                else{
-                    echo "Deploying production environment"
+                    if(currentDeployEnv == "dev"){
+                        echo "Deploying dev environment"
+                    }
+                    else if (currentDeployEnv == "somke"){
+                        echo "Deploying somke environment"
+                    }
+                    else{
+                        echo "Deploying production environment"
+                    }
                 }
             }
+           
         }
 
         stage('Cleanup Workspace') {
