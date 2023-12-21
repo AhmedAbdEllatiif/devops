@@ -7,6 +7,19 @@ pipeline {
             }
       }
    
+
+        // Change directory 
+        stages {
+            stage('Change Directory') {
+                steps {
+                    echo "Changing Directory.."
+                    sh '''
+                        cd jenkins/node
+                    '''
+                }
+        }
+
+
         // build stage 
         stages {
             stage('Build') {
