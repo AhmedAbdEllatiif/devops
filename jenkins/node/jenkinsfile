@@ -39,16 +39,18 @@ pipeline {
     //--------------------------------------------------------------------------------------------
     parameters {
         // choice param
-        choice 
-        choices: ['dev', 'smoke' ,'production'] ,
-        name: 'deployEnv', 
-        description: 'This is the deployment environment'
+        choice (
+            choices: ['dev', 'smoke' ,'production'] ,
+            name: 'deployEnv', 
+            description: 'This is the deployment environment'
+        )
 
         // boolean param
-        booleanParam 
-        defaultValue: false, 
-        name: "Welcome_Script",
-        description: "If true the welcome script will be executed"
+        booleanParam (
+            defaultValue: false, 
+            name: "Welcome_Script",
+            description: "If true the welcome script will be executed"
+        )
 
     }
 
