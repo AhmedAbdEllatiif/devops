@@ -17,6 +17,7 @@ pipeline {
                     echo "Changing Directory.."
                     sh '''
                         cd jenkins/node
+                        pwd
                     '''
                 }
                 
@@ -28,7 +29,8 @@ pipeline {
                 steps {
                     echo "Building.."
                     sh '''
-            
+                        pwd
+                         cd jenkins/node 
                         npm install 
                     '''
                 }
