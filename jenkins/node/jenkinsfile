@@ -38,7 +38,18 @@ pipeline {
     //
     //--------------------------------------------------------------------------------------------
     parameters {
-        choice choices: ['dev', 'somke' ,'production'] , name: 'deployEnv', description: 'This is the deployment environment'
+        // choice param
+        choice 
+        choices: ['dev', 'smoke' ,'production'] ,
+        name: 'deployEnv', 
+        description: 'This is the deployment environment'
+
+        // boolean param
+        booleanParam 
+        defaultValue: false, 
+        name: "Welcome_Script",
+        description: "If true the welcome script will be executed"
+
     }
 
 
@@ -50,6 +61,21 @@ pipeline {
     //--------------------------------------------------------------------------------------------
     stages {
 
+        stage ("Welcome Stage") {
+            when {
+                expression{
+                    params.Welcome_Script == true
+                }
+            }
+            steps {
+                sh ''' cd jenkins/node '''
+                script {
+                    welcome = load "welcomescript.groovy"
+                    welcome.sayWelcome()
+                }
+            }
+        }
+
         stage('Change Directory') {
             steps {
                 echo "Changing Directory.."
@@ -59,7 +85,7 @@ pipeline {
             }
             
         }
-
+    
         stage('Build') {
             steps {
                 echo "Building app  version ${CURRENT_VERSION}"
@@ -96,7 +122,7 @@ pipeline {
                     if(currentDeployEnv == "dev"){
                         echo "Deploying dev environment"
                     }
-                    else if (currentDeployEnv == "somke"){
+                    else if (currentDeployEnv == "smoke"){
                         echo "Deploying somke environment"
                     }
                     else{
