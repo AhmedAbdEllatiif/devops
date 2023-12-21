@@ -1,12 +1,11 @@
 pipeline {
 
+    // agent node
     agent { 
         node {
             label 'node-2'
             }
       }
-
-    agent any
    
         // build stage 
         stages {
