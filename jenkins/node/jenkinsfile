@@ -52,6 +52,13 @@ pipeline {
             description: "If true the welcome script will be executed"
         )
 
+         // boolean param
+        booleanParam (
+            defaultValue: false, 
+            name: "use_input",
+            description: "If true the you will be asked for input stage"
+        )
+
     }
 
 
@@ -114,6 +121,29 @@ pipeline {
             }
         }
 
+        stage ("Take Input") {
+
+            when {
+                expression{
+                    params.use_input == true
+                 }
+            }
+            input {
+                message "Try this input before deploy"
+                ok "Thanks"
+                parameters choice (
+                    choices: ['1','2','3'],
+                    name: "version",
+                    description: "This Input for demo"
+                )
+            }
+
+            steps {
+                sh '''
+                    echo you select ${version}
+                '''
+            }
+        }
 
         stage ("Deploy") {
             steps {
